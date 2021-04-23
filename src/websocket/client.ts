@@ -50,8 +50,5 @@ io.on("connect", (socket) => {
   await messageService.create({
    text, user_id
   })
-
-
-  // Salvar a conexão com o socket_id,user_id
  })
 })
