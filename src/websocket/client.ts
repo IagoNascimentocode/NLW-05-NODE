@@ -13,7 +13,7 @@ io.on("connect", (socket) => {
 
  const connectionsService = new ConnectionsService();
  const userService = new UserService();
- const messageService = new MessagesService();
+ const messagesService = new MessagesService();
 
  socket.on("client_frist_access", async params => {
   const socket_id = socket.id;
@@ -47,8 +47,12 @@ io.on("connect", (socket) => {
    }
   }
 
-  await messageService.create({
+  await messagesService.create({
    text, user_id
-  })
+  });
+
+  const allMessages = await messagesService.listByUser(user_id);
+
+  socket.emit("client_list_all_messages", allMessages)
  })
 })

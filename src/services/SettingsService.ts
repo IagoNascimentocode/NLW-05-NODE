@@ -4,48 +4,48 @@ import { SettingsRepository } from "../repositories/SettingsRepository"
 
 
 interface ISettingsCreate {
- chat: boolean;
- user_name: string;
+  chat: boolean;
+  user_name: string;
 }
 class SettingsService {
 
- private settingsRepository: Repository<Setting>;
+  private settingsRepository: Repository<Setting>;
 
- constructor() {
-  this.settingsRepository = getCustomRepository(SettingsRepository);
- }
-
- async create({ chat, user_name }: ISettingsCreate) {
-
-  const userAlreadyExists = await this.settingsRepository.findOne({
-   user_name
-  })
-
-  if (userAlreadyExists) {
-   throw new Error("User Already exists!")
+  constructor() {
+    this.settingsRepository = getCustomRepository(SettingsRepository);
   }
 
-  const settings = this.settingsRepository.create({ chat, user_name });
+  async create({ chat, user_name }: ISettingsCreate) {
 
-  await this.settingsRepository.save(settings);
+    const userAlreadyExists = await this.settingsRepository.findOne({
+      user_name
+    })
 
-  return settings;
- }
+    if (userAlreadyExists) {
+      throw new Error("User Already exists!")
+    }
 
- async findByUserName(user_name: string) {
-  const settings = await this.settingsRepository.findOne({
-   user_name
-  })
-  return settings.chat
- }
+    const settings = this.settingsRepository.create({ chat, user_name });
 
- async update(user_name: string, chat: boolean) {
-  const settings = await this.settingsRepository.createQueryBuilder()
-   .update(Setting)
-   .set({ chat })
-   .where("user_name = :user_name", { user_name })
-   .execute()
+    await this.settingsRepository.save(settings);
 
- }
+    return settings;
+  }
+
+  async findByUserName(user_name: string) {
+    const settings = await this.settingsRepository.findOne({
+      user_name
+    })
+    return settings;
+  }
+
+  async update(user_name: string, chat: boolean) {
+    const settings = await this.settingsRepository.createQueryBuilder()
+      .update(Setting)
+      .set({ chat })
+      .where("user_name = :user_name", { user_name })
+      .execute()
+
+  }
 }
 export { SettingsService }
