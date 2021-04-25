@@ -40,7 +40,7 @@ class SettingsService {
   }
 
   async update(user_name: string, chat: boolean) {
-    const settings = await this.settingsRepository.createQueryBuilder()
+    await this.settingsRepository.createQueryBuilder()
       .update(Setting)
       .set({ chat })
       .where("user_name = :user_name", { user_name })
